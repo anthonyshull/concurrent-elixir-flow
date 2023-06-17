@@ -13,6 +13,15 @@ defmodule Airports do
     |> Enum.reject(&(&1.type == "closed"))
   end
 
+  def open_airports_flow() do
+    airports_csv()
+    |> File.stream!()
+    |> Flow.from_enumerable()
+    |> Flow.map(&row_to_map_flow/1)
+    |> Flow.filter(&(&1.type == "closed"))
+    |> Enum.to_list()
+  end
+
   def open_airports_stream() do
     airports_csv()
     |> File.stream!()
@@ -29,6 +38,12 @@ defmodule Airports do
       name: Enum.at(row, 3),
       type: Enum.at(row, 2)
     }
+  end
+
+  defp row_to_map_flow(row) do
+    [row] = CSV.parse_string(row, skip_headers: false)
+
+    row_to_map(row)
   end
 
   defp row_to_map_stream(row) do

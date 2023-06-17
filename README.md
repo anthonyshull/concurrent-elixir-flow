@@ -9,10 +9,12 @@
 # Output
 
 ```
+Benchmarking flow ...
 Benchmarking naive ...
 Benchmarking stream ...
 
 Name             ips        average  deviation         median         99th %
-stream          3.78         0.26 s     ±0.69%         0.26 s         0.27 s
-naive           0.88         1.14 s    ±18.52%         1.04 s         1.51 s
+flow            9.39      106.54 ms     ±1.26%      106.38 ms      109.38 ms
+stream          3.66      273.31 ms     ±0.75%      273.07 ms      277.49 ms
+naive           0.79     1270.82 ms    ±14.67%     1270.07 ms     1486.82 ms
 ```
