@@ -19,7 +19,12 @@ defmodule Airports do
     |> Flow.from_enumerable()
     |> Flow.map(&row_to_map_flow/1)
     |> Flow.filter(&(&1.type == "closed"))
+    |> Flow.partition(key: {:key, :country})
+    |> Flow.group_by(&(&1.country))
+    |> Flow.on_trigger(fn map -> { Enum.map(map, fn {k, v} -> {k, Enum.count(v)} end), map } end)
+    |> Flow.take_sort(10, fn {_, a}, {_, b} -> a > b end)
     |> Enum.to_list()
+    |> List.flatten()
   end
 
   def open_airports_stream() do
