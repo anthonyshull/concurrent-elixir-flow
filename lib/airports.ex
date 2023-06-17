@@ -21,7 +21,7 @@ defmodule Airports do
     |> Flow.reject(&(&1.type == "closed"))
     |> Flow.partition(key: {:key, :country})
     |> Flow.group_by(&(&1.country))
-    |> Flow.on_trigger(fn acc -> { Enum.map(acc, fn {k, v} -> {k, Enum.count(v)} end), acc } end)
+    |> Flow.on_trigger(fn acc -> { Enum.map(acc, fn {country, data} -> {country, Enum.count(data)} end), acc } end)
     |> Flow.take_sort(10, fn {_, a}, {_, b} -> a > b end)
     |> Enum.to_list()
     |> List.flatten()
